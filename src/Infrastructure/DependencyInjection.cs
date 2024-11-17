@@ -12,5 +12,7 @@ public static class DependencyInjectionExtensions
         {
             options.UseSqlServer(connectionString);
         });
+        
+        services.AddScoped<IPengaDbContext>(provider => provider.GetService<PengaDbContext>());
     }
 }

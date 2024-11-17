@@ -6,10 +6,10 @@ namespace Application.Services;
 
 public class CostService
 {
-    private readonly PengaDbContext _context;
+    private readonly IPengaDbContext _context;
     private readonly IValidator<AddOrUpdateCostRequest> _addOrUpdateCostRequestValidator;
     
-    public CostService(PengaDbContext context, IValidator<AddOrUpdateCostRequest> addOrUpdateCostRequestValidator)
+    public CostService(IPengaDbContext context, IValidator<AddOrUpdateCostRequest> addOrUpdateCostRequestValidator)
     {
         _context = context;
         _addOrUpdateCostRequestValidator = addOrUpdateCostRequestValidator;

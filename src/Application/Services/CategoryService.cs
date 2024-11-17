@@ -6,10 +6,10 @@ namespace Application.Services;
 
 public class CategoryService
 {
-    private readonly PengaDbContext _context;
+    private readonly IPengaDbContext _context;
     private readonly IValidator<AddOrUpdateCategoryRequest> _addOrUpdateCategoryRequestValidator;
     
-    public CategoryService(PengaDbContext context, IValidator<AddOrUpdateCategoryRequest> addOrUpdateCategoryRequestValidator)
+    public CategoryService(IPengaDbContext context, IValidator<AddOrUpdateCategoryRequest> addOrUpdateCategoryRequestValidator)
     {
         _context = context;
         _addOrUpdateCategoryRequestValidator = addOrUpdateCategoryRequestValidator;
