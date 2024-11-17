@@ -4,6 +4,7 @@ using Application.Services;
 using Application.Validators;
 using FluentValidation;
 using Infrastructure;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,7 @@ builder.Services.AddScoped<CategoryService>();
 builder.Services.AddScoped<CostService>();
 builder.Services.AddDb(configuration.GetConnectionString("PengaDb"));
 builder.Services.AddValidatorsFromAssemblyContaining<AddOrUpdateCategoryRequestValidator>();
+builder.Services.AddSerilog();
 
 var app = builder.Build();
 app.UseMiddleware<ExceptionMiddleware>();
@@ -27,6 +29,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.File("logs/log.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
+app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
 
