@@ -8,7 +8,6 @@ public class PengaDbContext : DbContext, IPengaDbContext
 {
     public PengaDbContext(DbContextOptions<PengaDbContext> options) : base(options)
     {
-        Database.EnsureCreated();
     }
     
     public DbSet<Category> Categories { get; set; }
