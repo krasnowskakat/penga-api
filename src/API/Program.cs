@@ -14,6 +14,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 builder.Services.AddScoped<CategoryService>();
+builder.Services.AddScoped<CostService>();
 builder.Services.AddDb(configuration.GetConnectionString("PengaDb"));
 builder.Services.AddValidatorsFromAssemblyContaining<AddOrUpdateCategoryRequestValidator>();
 
