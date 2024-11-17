@@ -4,9 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure;
 
-public class DependencyInjection
+public static class DependencyInjectionExtensions
 {
-    public static void ConfigureServices(IServiceCollection services, string connectionString)
+    public static void AddDb(this IServiceCollection services, string connectionString)
     {
         services.AddDbContext<PengaDbContext>(options =>
         {
