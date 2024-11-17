@@ -1,5 +1,8 @@
+using API.Middleware;
 using Application;
 using Application.Services;
+using Application.Validators;
+using FluentValidation;
 using Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,8 +15,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 builder.Services.AddScoped<CategoryService>();
 DependencyInjection.ConfigureServices(builder.Services, configuration.GetConnectionString("PengaDb"));
+builder.Services.AddValidatorsFromAssemblyContaining<AddOrUpdateCategoryRequestValidator>();
 
 var app = builder.Build();
+app.UseMiddleware<ExceptionMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
