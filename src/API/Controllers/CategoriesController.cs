@@ -19,24 +19,31 @@ public class CategoriesController : ControllerBase
     [HttpGet]
     public IActionResult GetCategories()
     {
-        return Ok("Categories");
+        return Ok(_categoryService.GetCategories());
+    }
+    
+    [HttpGet("{id}")]
+    public IActionResult GetCategoryById([FromRoute] int id)
+    {
+        return Ok(_categoryService.GetCategoryById(id));
     }
     
     [HttpPost]
-    public IActionResult AddCategory([FromBody] AddCategoryRequest request)
+    public IActionResult AddCategory([FromBody] AddOrUpdateCategoryRequest request)
     {
         return Ok(_categoryService.AddCategory(request));
     }
     
     [HttpPut("{id}")]
-    public IActionResult UpdateCategory(int id)
+    public IActionResult UpdateCategory([FromRoute] int id, [FromBody] AddOrUpdateCategoryRequest request)
     {
-        return Ok($"Update Category {id}");
+        return Ok(_categoryService.UpdateCategory(id, request));
     }
     
     [HttpDelete("{id}")]
-    public IActionResult DeleteCategory(int id)
+    public IActionResult DeleteCategory([FromRoute] int id)
     {
-        return Ok($"Delete Category {id}");
+        _categoryService.DeleteCategory(id);
+        return Ok();
     }
 }

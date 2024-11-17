@@ -1,6 +1,6 @@
 namespace Application.Models;
 
-public class AddCategoryRequest
+public class AddOrUpdateCategoryRequest
 { 
     public string Name { get; set; }
 }
