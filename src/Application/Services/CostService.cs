@@ -1,6 +1,7 @@
 ﻿using Application.Models;
 using Domain;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Services;
 
@@ -16,16 +17,16 @@ public class CostService
     }
     
         
-    public List<CostResponse> GetCosts()
+    public async Task<List<CostResponse>> GetCostsAsync()
     {
-        return _context.Costs
+        return await _context.Costs
             .Select(x => CostResponse.From(x))
-            .ToList();
+            .ToListAsync();
     }
     
-    public CostResponse GetCostById(int id)
+    public async Task<CostResponse> GetCostByIdAsync(int id)
     {
-        var cost = _context.Costs.Find(id);
+        var cost = await _context.Costs.FindAsync(id);
         
         if (cost == null)
         {
@@ -35,22 +36,22 @@ public class CostService
         return CostResponse.From(cost);
     }
     
-    public CostResponse AddCost(AddOrUpdateCostRequest request)
+    public async Task<CostResponse> AddCostAsync(AddOrUpdateCostRequest request)
     {
-        _addOrUpdateCostRequestValidator.ValidateAndThrow(request);
+        await _addOrUpdateCostRequestValidator.ValidateAndThrowAsync(request);
 
         var cost = new Cost(request.Name, request.Description, request.Date, request.Amount, request.CategoryId);
         
-        _context.Costs.Add(cost);
-        _context.SaveChanges();
+        await _context.Costs.AddAsync(cost);
+        await _context.SaveChangesAsync();
         
         return CostResponse.From(cost);
     }
     
-    public CostResponse UpdateCost(int id, AddOrUpdateCostRequest request)
+    public async Task<CostResponse> UpdateCostAsync(int id, AddOrUpdateCostRequest request)
     {
-        _addOrUpdateCostRequestValidator.ValidateAndThrow(request);
-        var cost = _context.Costs.Find(id);
+        await _addOrUpdateCostRequestValidator.ValidateAndThrowAsync(request);
+        var cost = await _context.Costs.FindAsync(id);
         
         if (cost == null)
         {
@@ -58,14 +59,14 @@ public class CostService
         }
         
         cost.Update(request.Name, request.Description, request.Date, request.Amount, request.CategoryId);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
         
         return CostResponse.From(cost);
     }
     
-    public void DeleteCost(int id)
+    public async Task DeleteCostAsync(int id)
     {
-        var cost = _context.Costs.Find(id);
+        var cost = await _context.Costs.FindAsync(id);
         
         if (cost == null)
         {
@@ -73,7 +74,7 @@ public class CostService
         }
         
         _context.Costs.Remove(cost);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 
 }

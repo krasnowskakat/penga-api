@@ -17,33 +17,33 @@ public class CategoriesController : ControllerBase
     }
     
     [HttpGet]
-    public IActionResult GetCategories()
+    public async Task<IActionResult> GetCategories()
     {
-        return Ok(_categoryService.GetCategories());
+        return Ok(await _categoryService.GetCategoriesAsync());
     }
     
     [HttpGet("{id}")]
-    public IActionResult GetCategoryById([FromRoute] int id)
+    public async Task<IActionResult> GetCategoryById([FromRoute] int id)
     {
-        return Ok(_categoryService.GetCategoryById(id));
+        return Ok(await _categoryService.GetCategoryByIdAsync(id));
     }
     
     [HttpPost]
-    public IActionResult AddCategory([FromBody] AddOrUpdateCategoryRequest request)
+    public async Task<IActionResult> AddCategory([FromBody] AddOrUpdateCategoryRequest request)
     {
-        return Ok(_categoryService.AddCategory(request));
+        return Ok(await _categoryService.AddCategoryAsync(request));
     }
     
     [HttpPut("{id}")]
-    public IActionResult UpdateCategory([FromRoute] int id, [FromBody] AddOrUpdateCategoryRequest request)
+    public async Task<IActionResult> UpdateCategory([FromRoute] int id, [FromBody] AddOrUpdateCategoryRequest request)
     {
-        return Ok(_categoryService.UpdateCategory(id, request));
+        return Ok(await _categoryService.UpdateCategoryAsync(id, request));
     }
     
     [HttpDelete("{id}")]
-    public IActionResult DeleteCategory([FromRoute] int id)
+    public async Task<IActionResult> DeleteCategory([FromRoute] int id)
     {
-        _categoryService.DeleteCategory(id);
+        await _categoryService.DeleteCategoryAsync(id);
         return Ok();
     }
 }

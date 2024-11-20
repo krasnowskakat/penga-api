@@ -13,7 +13,7 @@ namespace Tests.UnitTests;
 public class CategoryServiceTests
 {
     [Fact]
-    public void AddCategory_ShouldAddCategory_WhenCategoryIsValid()
+    public async Task AddCategory_ShouldAddCategory_WhenCategoryIsValid()
     {
         // Arrange
         var _validatorMock = new Mock<IValidator<AddOrUpdateCategoryRequest>>();
@@ -24,7 +24,7 @@ public class CategoryServiceTests
         };
         
         // Act
-        var response = _categoryService.AddCategory(request);
+        var response = await _categoryService.AddCategoryAsync(request);
         
         // Assert
         Assert.NotNull(response);
@@ -32,7 +32,7 @@ public class CategoryServiceTests
     }
     
     [Fact]
-    public void AddCategory_ShouldThrowValidationException_WhenCategoryIsNotValid()
+    public async Task AddCategory_ShouldThrowValidationException_WhenCategoryIsNotValid()
     {
         // Arrange
         var validator = new InlineValidator<AddOrUpdateCategoryRequest>();
@@ -42,7 +42,7 @@ public class CategoryServiceTests
         var request = new AddOrUpdateCategoryRequest();
         
         // Act & Assert
-        Assert.Throws<ValidationException>(() => _categoryService.AddCategory(request));
+        await Assert.ThrowsAsync<ValidationException>(async () => await _categoryService.AddCategoryAsync(request));
     }
     
     private IPengaDbContext GetDbContext()

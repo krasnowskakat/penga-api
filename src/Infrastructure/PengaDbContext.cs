@@ -12,7 +12,7 @@ public class PengaDbContext : DbContext, IPengaDbContext
     
     public DbSet<Category> Categories { get; set; }
     public DbSet<Cost> Costs { get; set; }
-    
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(PengaDbContext).Assembly);

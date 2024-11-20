@@ -8,4 +8,5 @@ public interface IPengaDbContext
     DbSet<Cost> Costs { get; set; }
     
     int SaveChanges();
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

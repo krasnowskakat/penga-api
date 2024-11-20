@@ -1,6 +1,7 @@
 ﻿using Application.Models;
 using Domain;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Services;
 
@@ -16,16 +17,16 @@ public class CategoryService
     }
     
         
-    public List<CategoryResponse> GetCategories()
+    public async Task<List<CategoryResponse>> GetCategoriesAsync()
     {
-        return _context.Categories
+        return await _context.Categories
             .Select(x => CategoryResponse.From(x))
-            .ToList();
+            .ToListAsync();
     }
     
-    public CategoryResponse GetCategoryById(int id)
+    public async Task<CategoryResponse> GetCategoryByIdAsync(int id)
     {
-        var category = _context.Categories.Find(id);
+        var category = await _context.Categories.FindAsync(id);
         
         if (category == null)
         {
@@ -35,24 +36,24 @@ public class CategoryService
         return CategoryResponse.From(category);
     }
     
-    public CategoryResponse AddCategory(AddOrUpdateCategoryRequest request)
+    public async Task<CategoryResponse> AddCategoryAsync(AddOrUpdateCategoryRequest request)
     {
-        _addOrUpdateCategoryRequestValidator.ValidateAndThrow(request);
+        await _addOrUpdateCategoryRequestValidator.ValidateAndThrowAsync(request);
         var category = new Category
         {
             Name = request.Name
         };
         
-        _context.Categories.Add(category);
-        _context.SaveChanges();
+        await _context.Categories.AddAsync(category);
+        await _context.SaveChangesAsync();
         
         return CategoryResponse.From(category);
     }
     
-    public CategoryResponse UpdateCategory(int id, AddOrUpdateCategoryRequest request)
+    public async Task<CategoryResponse> UpdateCategoryAsync(int id, AddOrUpdateCategoryRequest request)
     {
-        _addOrUpdateCategoryRequestValidator.ValidateAndThrow(request);
-        var category = _context.Categories.Find(id);
+        await _addOrUpdateCategoryRequestValidator.ValidateAndThrowAsync(request);
+        var category = await _context.Categories.FindAsync(id);
         
         if (category == null)
         {
@@ -60,14 +61,14 @@ public class CategoryService
         }
         
         category.Name = request.Name;
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
         
         return CategoryResponse.From(category);
     }
     
-    public void DeleteCategory(int id)
+    public async Task DeleteCategoryAsync(int id)
     {
-        var category = _context.Categories.Find(id);
+        var category = await _context.Categories.FindAsync(id);
         
         if (category == null)
         {
@@ -75,7 +76,7 @@ public class CategoryService
         }
         
         _context.Categories.Remove(category);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 
 }

@@ -16,33 +16,33 @@ public class CostsController : ControllerBase
     }
     
     [HttpGet]
-    public IActionResult GetCosts()
+    public async Task<IActionResult> GetCosts()
     {
-        return Ok(_costService.GetCosts());
+        return Ok(await _costService.GetCostsAsync());
     }
     
     [HttpGet("{id}")]
-    public IActionResult GetCostById([FromRoute] int id)
+    public async Task<IActionResult> GetCostById([FromRoute] int id)
     {
-        return Ok(_costService.GetCostById(id));
+        return Ok(await _costService.GetCostByIdAsync(id));
     }
     
     [HttpPost]
-    public IActionResult AddCost([FromBody] AddOrUpdateCostRequest request)
+    public async Task<IActionResult> AddCost([FromBody] AddOrUpdateCostRequest request)
     {
-        return Ok(_costService.AddCost(request));
+        return Ok(await _costService.AddCostAsync(request));
     }
     
     [HttpPut("{id}")]
-    public IActionResult UpdateCost([FromRoute] int id, [FromBody] AddOrUpdateCostRequest request)
+    public async Task<IActionResult> UpdateCost([FromRoute] int id, [FromBody] AddOrUpdateCostRequest request)
     {
-        return Ok(_costService.UpdateCost(id, request));
+        return Ok(await _costService.UpdateCostAsync(id, request));
     }
     
     [HttpDelete("{id}")]
-    public IActionResult DeleteCost([FromRoute] int id)
+    public async Task<IActionResult> DeleteCost([FromRoute] int id)
     {
-        _costService.DeleteCost(id);
+        await _costService.DeleteCostAsync(id);
         return Ok();
     }
 }
