@@ -17,16 +17,16 @@ public class CostService
     }
     
         
-    public async Task<List<CostResponse>> GetCostsAsync()
+    public async Task<List<CostResponse>> GetCostsAsync(CancellationToken cancellationToken = default)
     {
         return await _context.Costs
             .Select(x => CostResponse.From(x))
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
     
-    public async Task<CostResponse> GetCostByIdAsync(int id)
+    public async Task<CostResponse> GetCostByIdAsync(int id, CancellationToken cancellationToken = default)
     {
-        var cost = await _context.Costs.FindAsync(id);
+        var cost = await _context.Costs.FindAsync(id, cancellationToken);
         
         if (cost == null)
         {
@@ -36,22 +36,22 @@ public class CostService
         return CostResponse.From(cost);
     }
     
-    public async Task<CostResponse> AddCostAsync(AddOrUpdateCostRequest request)
+    public async Task<CostResponse> AddCostAsync(AddOrUpdateCostRequest request, CancellationToken cancellationToken = default)
     {
-        await _addOrUpdateCostRequestValidator.ValidateAndThrowAsync(request);
+        await _addOrUpdateCostRequestValidator.ValidateAndThrowAsync(request, cancellationToken);
 
         var cost = new Cost(request.Name, request.Description, request.Date, request.Amount, request.CategoryId);
         
-        await _context.Costs.AddAsync(cost);
-        await _context.SaveChangesAsync();
+        await _context.Costs.AddAsync(cost, cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
         
         return CostResponse.From(cost);
     }
     
-    public async Task<CostResponse> UpdateCostAsync(int id, AddOrUpdateCostRequest request)
+    public async Task<CostResponse> UpdateCostAsync(int id, AddOrUpdateCostRequest request, CancellationToken cancellationToken = default)
     {
-        await _addOrUpdateCostRequestValidator.ValidateAndThrowAsync(request);
-        var cost = await _context.Costs.FindAsync(id);
+        await _addOrUpdateCostRequestValidator.ValidateAndThrowAsync(request, cancellationToken);
+        var cost = await _context.Costs.FindAsync(id, cancellationToken);
         
         if (cost == null)
         {
@@ -59,14 +59,14 @@ public class CostService
         }
         
         cost.Update(request.Name, request.Description, request.Date, request.Amount, request.CategoryId);
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
         
         return CostResponse.From(cost);
     }
     
-    public async Task DeleteCostAsync(int id)
+    public async Task DeleteCostAsync(int id, CancellationToken cancellationToken = default)
     {
-        var cost = await _context.Costs.FindAsync(id);
+        var cost = await _context.Costs.FindAsync(id, cancellationToken);
         
         if (cost == null)
         {
@@ -74,7 +74,7 @@ public class CostService
         }
         
         _context.Costs.Remove(cost);
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
     }
 
 }

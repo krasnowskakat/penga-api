@@ -17,33 +17,33 @@ public class CategoriesController : ControllerBase
     }
     
     [HttpGet]
-    public async Task<IActionResult> GetCategories()
+    public async Task<IActionResult> GetCategories(CancellationToken cancellationToken)
     {
-        return Ok(await _categoryService.GetCategoriesAsync());
+        return Ok(await _categoryService.GetCategoriesAsync(cancellationToken));
     }
     
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetCategoryById([FromRoute] int id)
+    public async Task<IActionResult> GetCategoryById([FromRoute] int id, CancellationToken cancellationToken)
     {
-        return Ok(await _categoryService.GetCategoryByIdAsync(id));
+        return Ok(await _categoryService.GetCategoryByIdAsync(id, cancellationToken));
     }
     
     [HttpPost]
-    public async Task<IActionResult> AddCategory([FromBody] AddOrUpdateCategoryRequest request)
+    public async Task<IActionResult> AddCategory([FromBody] AddOrUpdateCategoryRequest request, CancellationToken cancellationToken)
     {
-        return Ok(await _categoryService.AddCategoryAsync(request));
+        return Ok(await _categoryService.AddCategoryAsync(request, cancellationToken));
     }
     
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateCategory([FromRoute] int id, [FromBody] AddOrUpdateCategoryRequest request)
+    public async Task<IActionResult> UpdateCategory([FromRoute] int id, [FromBody] AddOrUpdateCategoryRequest request, CancellationToken cancellationToken)
     {
-        return Ok(await _categoryService.UpdateCategoryAsync(id, request));
+        return Ok(await _categoryService.UpdateCategoryAsync(id, request, cancellationToken));
     }
     
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteCategory([FromRoute] int id)
+    public async Task<IActionResult> DeleteCategory([FromRoute] int id, CancellationToken cancellationToken)
     {
-        await _categoryService.DeleteCategoryAsync(id);
+        await _categoryService.DeleteCategoryAsync(id, cancellationToken);
         return Ok();
     }
 }

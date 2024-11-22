@@ -17,16 +17,16 @@ public class CategoryService
     }
     
         
-    public async Task<List<CategoryResponse>> GetCategoriesAsync()
+    public async Task<List<CategoryResponse>> GetCategoriesAsync(CancellationToken cancellationToken = default)
     {
         return await _context.Categories
             .Select(x => CategoryResponse.From(x))
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
     
-    public async Task<CategoryResponse> GetCategoryByIdAsync(int id)
+    public async Task<CategoryResponse> GetCategoryByIdAsync(int id, CancellationToken cancellationToken = default)
     {
-        var category = await _context.Categories.FindAsync(id);
+        var category = await _context.Categories.FindAsync(id, cancellationToken);
         
         if (category == null)
         {
@@ -36,24 +36,24 @@ public class CategoryService
         return CategoryResponse.From(category);
     }
     
-    public async Task<CategoryResponse> AddCategoryAsync(AddOrUpdateCategoryRequest request)
+    public async Task<CategoryResponse> AddCategoryAsync(AddOrUpdateCategoryRequest request, CancellationToken cancellationToken = default)
     {
-        await _addOrUpdateCategoryRequestValidator.ValidateAndThrowAsync(request);
+        await _addOrUpdateCategoryRequestValidator.ValidateAndThrowAsync(request, cancellationToken);
         var category = new Category
         {
             Name = request.Name
         };
         
-        await _context.Categories.AddAsync(category);
-        await _context.SaveChangesAsync();
+        await _context.Categories.AddAsync(category, cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
         
         return CategoryResponse.From(category);
     }
     
-    public async Task<CategoryResponse> UpdateCategoryAsync(int id, AddOrUpdateCategoryRequest request)
+    public async Task<CategoryResponse> UpdateCategoryAsync(int id, AddOrUpdateCategoryRequest request, CancellationToken cancellationToken = default)
     {
-        await _addOrUpdateCategoryRequestValidator.ValidateAndThrowAsync(request);
-        var category = await _context.Categories.FindAsync(id);
+        await _addOrUpdateCategoryRequestValidator.ValidateAndThrowAsync(request, cancellationToken);
+        var category = await _context.Categories.FindAsync(id, cancellationToken);
         
         if (category == null)
         {
@@ -61,14 +61,14 @@ public class CategoryService
         }
         
         category.Name = request.Name;
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
         
         return CategoryResponse.From(category);
     }
     
-    public async Task DeleteCategoryAsync(int id)
+    public async Task DeleteCategoryAsync(int id, CancellationToken cancellationToken = default)
     {
-        var category = await _context.Categories.FindAsync(id);
+        var category = await _context.Categories.FindAsync(id, cancellationToken);
         
         if (category == null)
         {
@@ -76,7 +76,7 @@ public class CategoryService
         }
         
         _context.Categories.Remove(category);
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
     }
 
 }
