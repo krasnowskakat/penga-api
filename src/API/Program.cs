@@ -1,5 +1,6 @@
 using API.Middleware;
 using Application;
+using Application.Queries;
 using Application.Services;
 using Application.Validators;
 using FluentValidation;
@@ -19,6 +20,7 @@ builder.Services.AddScoped<CostService>();
 builder.Services.AddDb(configuration.GetConnectionString("PengaDb"));
 builder.Services.AddValidatorsFromAssemblyContaining<AddOrUpdateCategoryRequestValidator>();
 builder.Services.AddSerilog();
+builder.Services.AddMediatR(config => config.RegisterServicesFromAssemblyContaining(typeof(GetCategoriesQuery)));
 
 var app = builder.Build();
 app.UseMiddleware<ExceptionMiddleware>();

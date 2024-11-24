@@ -1,6 +1,8 @@
 using Application;
 using Application.Models;
+using Application.Queries;
 using Application.Services;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -10,22 +12,24 @@ namespace API.Controllers;
 public class CategoriesController : ControllerBase
 {
     private readonly CategoryService _categoryService;
+    private readonly IMediator _mediator;
     
-    public CategoriesController(CategoryService categoryService)
+    public CategoriesController(CategoryService categoryService, IMediator mediator)
     {
         _categoryService = categoryService;
+        _mediator = mediator;
     }
     
     [HttpGet]
     public async Task<IActionResult> GetCategories(CancellationToken cancellationToken)
     {
-        return Ok(await _categoryService.GetCategoriesAsync(cancellationToken));
+        return Ok(await _mediator.Send(new GetCategoriesQuery(), cancellationToken));
     }
     
     [HttpGet("{id}")]
     public async Task<IActionResult> GetCategoryById([FromRoute] int id, CancellationToken cancellationToken)
     {
-        return Ok(await _categoryService.GetCategoryByIdAsync(id, cancellationToken));
+        return Ok(await _mediator.Send(new GetCategoryByIdQuery(id), cancellationToken));
     }
     
     [HttpPost]

@@ -16,26 +16,6 @@ public class CategoryService
         _addOrUpdateCategoryRequestValidator = addOrUpdateCategoryRequestValidator;
     }
     
-        
-    public async Task<List<CategoryResponse>> GetCategoriesAsync(CancellationToken cancellationToken = default)
-    {
-        return await _context.Categories
-            .Select(x => CategoryResponse.From(x))
-            .ToListAsync(cancellationToken);
-    }
-    
-    public async Task<CategoryResponse> GetCategoryByIdAsync(int id, CancellationToken cancellationToken = default)
-    {
-        var category = await _context.Categories.FindAsync(id, cancellationToken);
-        
-        if (category == null)
-        {
-            throw new ValidationException("Category not found");
-        }
-        
-        return CategoryResponse.From(category);
-    }
-    
     public async Task<CategoryResponse> AddCategoryAsync(AddOrUpdateCategoryRequest request, CancellationToken cancellationToken = default)
     {
         await _addOrUpdateCategoryRequestValidator.ValidateAndThrowAsync(request, cancellationToken);
