@@ -36,7 +36,7 @@ jobs:
         COVERAGE_PERCENT=$(grep -oP 'line-rate="\K[0-9.]+' "$COVERAGE_FILE" | head -n 1 | awk '{printf "%.2f", $1 * 100}')
         echo "Coverage Percentage: $COVERAGE_PERCENT%"
         echo "COVERAGE_PERCENT=$COVERAGE_PERCENT" >> $GITHUB_ENV
-     - name: Post Build Comment
+    - name: Post Build Comment
       if: always() # Ensures this step runs even if the build fails
       uses: peter-evans/create-or-update-comment@v3
       with:
