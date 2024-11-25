@@ -26,6 +26,29 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
       working-directory: src
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+    - name: Run Test With Coverage
+      run: dotnet test --no-build --verbosity normal --collect:"Code Coverage"
       working-directory: src
+    - name: Extract Coverage Percentage
+      run: |
+        COVERAGE_FILE=$(find . -type f -name "coverage.cobertura.xml" | head -n 1)
+        echo "Coverage file: $COVERAGE_FILE"
+        COVERAGE_PERCENT=$(grep -oP 'line-rate="\K[0-9.]+' "$COVERAGE_FILE" | awk '{print $1 * 100}')
+        echo "Coverage Percentage: $COVERAGE_PERCENT%"
+        echo "COVERAGE_PERCENT=$COVERAGE_PERCENT" >> $GITHUB_ENV
+
+    - name: Generate Coverage Badge
+      run: |
+        COLOR="brightgreen"
+        if (( $(echo "$COVERAGE_PERCENT < 50" | bc -l) )); then
+          COLOR="red"
+        elif (( $(echo "$COVERAGE_PERCENT < 80" | bc -l) )); then
+          COLOR="yellow"
+        fi
+        curl "https://img.shields.io/badge/coverage-${COVERAGE_PERCENT}%25-${COLOR}.svg" -o coverage-badge.svg
+
+    - name: Upload Coverage Badge
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage-badge
+        path: coverage-badge.svg
