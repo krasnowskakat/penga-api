@@ -27,7 +27,7 @@ jobs:
       run: dotnet build --no-restore
       working-directory: src
     - name: Run Test With Coverage
-      run: dotnet test --no-build --verbosity normal --collect:"Code Coverage"
+      run: dotnet test --no-build --verbosity normal --collect:"XPlat Code Coverage"
       working-directory: src
     - name: Extract Coverage Percentage
       run: |
