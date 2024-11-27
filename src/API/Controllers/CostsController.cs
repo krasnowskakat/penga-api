@@ -1,6 +1,7 @@
 using Application;
 using Application.Models;
 using Application.Queries;
+using Application.Queries.Costs;
 using Application.Services;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

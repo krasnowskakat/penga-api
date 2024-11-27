@@ -1,10 +1,9 @@
 using Application.Models;
 using Domain;
-using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Queries;
+namespace Application.Queries.Costs;
 
 public class GetCostsQuery : IRequest<List<CostResponse>>
 {

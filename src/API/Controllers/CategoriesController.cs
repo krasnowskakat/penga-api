@@ -1,7 +1,5 @@
-using Application;
-using Application.Models;
-using Application.Queries;
-using Application.Services;
+using Application.Commands.Categories;
+using Application.Queries.Categories;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,12 +9,10 @@ namespace API.Controllers;
 [Route("api/[controller]")]
 public class CategoriesController : ControllerBase
 {
-    private readonly CategoryService _categoryService;
     private readonly IMediator _mediator;
     
-    public CategoriesController(CategoryService categoryService, IMediator mediator)
+    public CategoriesController(IMediator mediator)
     {
-        _categoryService = categoryService;
         _mediator = mediator;
     }
     
@@ -33,21 +29,22 @@ public class CategoriesController : ControllerBase
     }
     
     [HttpPost]
-    public async Task<IActionResult> AddCategory([FromBody] AddOrUpdateCategoryRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> AddCategory([FromBody] AddCategoryCommand request, CancellationToken cancellationToken)
     {
-        return Ok(await _categoryService.AddCategoryAsync(request, cancellationToken));
+        return Ok(await _mediator.Send(request, cancellationToken));
     }
     
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateCategory([FromRoute] int id, [FromBody] AddOrUpdateCategoryRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> UpdateCategory([FromRoute] int id, [FromBody] UpdateCategoryCommand request, CancellationToken cancellationToken)
     {
-        return Ok(await _categoryService.UpdateCategoryAsync(id, request, cancellationToken));
+        request.Id = id;
+        return Ok(await _mediator.Send(request, cancellationToken));
     }
     
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteCategory([FromRoute] int id, CancellationToken cancellationToken)
     {
-        await _categoryService.DeleteCategoryAsync(id, cancellationToken);
+        await _mediator.Send(new DeleteCategoryCommand(id), cancellationToken);
         return Ok();
     }
 }

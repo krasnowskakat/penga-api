@@ -3,7 +3,7 @@ using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Queries;
+namespace Application.Queries.Categories;
 
 public class GetCategoriesQuery : IRequest<List<CategoryResponse>>
 {
