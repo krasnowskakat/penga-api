@@ -1,6 +1,8 @@
 using Application;
 using Application.Models;
+using Application.Queries;
 using Application.Services;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -10,21 +12,23 @@ namespace API.Controllers;
 public class CostsController : ControllerBase
 {
     private readonly CostService _costService;
-    public CostsController(CostService costService)
+    private readonly IMediator _mediator;
+    public CostsController(CostService costService, IMediator mediator)
     {
         _costService = costService;
+        _mediator = mediator;
     }
     
     [HttpGet]
     public async Task<IActionResult> GetCosts(CancellationToken cancellationToken)
     {
-        return Ok(await _costService.GetCostsAsync(cancellationToken));
+        return Ok(await _mediator.Send(new GetCostsQuery(), cancellationToken));
     }
     
     [HttpGet("{id}")]
     public async Task<IActionResult> GetCostById([FromRoute] int id, CancellationToken cancellationToken)
     {
-        return Ok(await _costService.GetCostByIdAsync(id, cancellationToken));
+        return Ok(await _mediator.Send(new GetCostByIdQuery(id), cancellationToken));
     }
     
     [HttpPost]

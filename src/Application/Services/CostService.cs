@@ -16,26 +16,6 @@ public class CostService
         _addOrUpdateCostRequestValidator = addOrUpdateCostRequestValidator;
     }
     
-        
-    public async Task<List<CostResponse>> GetCostsAsync(CancellationToken cancellationToken = default)
-    {
-        return await _context.Costs
-            .Select(x => CostResponse.From(x))
-            .ToListAsync(cancellationToken);
-    }
-    
-    public async Task<CostResponse> GetCostByIdAsync(int id, CancellationToken cancellationToken = default)
-    {
-        var cost = await _context.Costs.FindAsync(id, cancellationToken);
-        
-        if (cost == null)
-        {
-            throw new ValidationException("Cost not found");
-        }
-        
-        return CostResponse.From(cost);
-    }
-    
     public async Task<CostResponse> AddCostAsync(AddOrUpdateCostRequest request, CancellationToken cancellationToken = default)
     {
         await _addOrUpdateCostRequestValidator.ValidateAndThrowAsync(request, cancellationToken);
