@@ -1,8 +1,5 @@
-using Application;
-using Application.Models;
-using Application.Queries;
+using Application.Commands.Costs;
 using Application.Queries.Costs;
-using Application.Services;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,11 +9,9 @@ namespace API.Controllers;
 [Route("api/[controller]")]
 public class CostsController : ControllerBase
 {
-    private readonly CostService _costService;
     private readonly IMediator _mediator;
-    public CostsController(CostService costService, IMediator mediator)
+    public CostsController(IMediator mediator)
     {
-        _costService = costService;
         _mediator = mediator;
     }
     
@@ -33,21 +28,21 @@ public class CostsController : ControllerBase
     }
     
     [HttpPost]
-    public async Task<IActionResult> AddCost([FromBody] AddOrUpdateCostRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> AddCost([FromBody] AddCostCommand request, CancellationToken cancellationToken)
     {
-        return Ok(await _costService.AddCostAsync(request, cancellationToken));
+        return Ok(await _mediator.Send(request, cancellationToken));
     }
     
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateCost([FromRoute] int id, [FromBody] AddOrUpdateCostRequest request, CancellationToken cancellationToken)
+    [HttpPut]
+    public async Task<IActionResult> UpdateCost([FromBody] UpdateCostCommand request, CancellationToken cancellationToken)
     {
-        return Ok(await _costService.UpdateCostAsync(id, request, cancellationToken));
+        return Ok(await _mediator.Send(request, cancellationToken));
     }
     
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteCost([FromRoute] int id, CancellationToken cancellationToken)
     {
-        await _costService.DeleteCostAsync(id, cancellationToken);
+        await _mediator.Send(new DeleteCostCommand(id), cancellationToken);
         return Ok();
     }
 }

@@ -1,7 +1,7 @@
 using Application.Commands.Categories;
 using FluentValidation;
 
-namespace Application.Validators;
+namespace Application.Validators.Categories;
 
 public class UpdateCategoryCommandValidator : AbstractValidator<UpdateCategoryCommand>
 {

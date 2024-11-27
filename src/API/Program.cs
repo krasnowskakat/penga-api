@@ -1,9 +1,6 @@
 using API.Middleware;
-using Application;
-using Application.Queries;
 using Application.Queries.Categories;
-using Application.Services;
-using Application.Validators;
+using Application.Validators.Categories;
 using FluentValidation;
 using Infrastructure;
 using Serilog;
@@ -16,7 +13,6 @@ var configuration = builder.Configuration;
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
-builder.Services.AddScoped<CostService>();
 builder.Services.AddDb(configuration.GetConnectionString("PengaDb"));
 builder.Services.AddValidatorsFromAssemblyContaining<AddCategoryCommandValidator>();
 builder.Services.AddSerilog();

@@ -34,10 +34,9 @@ public class CategoriesController : ControllerBase
         return Ok(await _mediator.Send(request, cancellationToken));
     }
     
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateCategory([FromRoute] int id, [FromBody] UpdateCategoryCommand request, CancellationToken cancellationToken)
+    [HttpPut]
+    public async Task<IActionResult> UpdateCategory([FromBody] UpdateCategoryCommand request, CancellationToken cancellationToken)
     {
-        request.Id = id;
         return Ok(await _mediator.Send(request, cancellationToken));
     }
     
