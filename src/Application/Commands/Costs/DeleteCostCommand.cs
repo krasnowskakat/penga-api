@@ -22,7 +22,7 @@ public class DeleteCostCommandHandler : IRequestHandler<DeleteCostCommand>
         _context = context;
     }
     
-    public async Task Handle(DeleteCostCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteCostCommand request, CancellationToken cancellationToken = default)
     {
         var cost = await _context.Costs.FindAsync(request.Id, cancellationToken);
         

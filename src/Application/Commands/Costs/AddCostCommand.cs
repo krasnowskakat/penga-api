@@ -33,7 +33,7 @@ public class AddCostCommandHandler : IRequestHandler<AddCostCommand, CostRespons
         _addCostRequestValidator = addCostRequestValidator;
     }
     
-    public async Task<CostResponse> Handle(AddCostCommand request, CancellationToken cancellationToken)
+    public async Task<CostResponse> Handle(AddCostCommand request, CancellationToken cancellationToken = default)
     {
         await _addCostRequestValidator.ValidateAndThrowAsync(request, cancellationToken);
 

@@ -27,7 +27,7 @@ public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryComman
         _updateCategoryCommandValidator = updateCategoryCommandValidator;
     }
     
-    public async Task<CategoryResponse> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
+    public async Task<CategoryResponse> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken = default)
     {
         await _updateCategoryCommandValidator.ValidateAndThrowAsync(request, cancellationToken);
         var category = await _context.Categories.FindAsync(request.Id, cancellationToken);

@@ -22,7 +22,7 @@ public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryComman
         _context = context;
     }
     
-    public async Task Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteCategoryCommand request, CancellationToken cancellationToken = default)
     {
         var category = await _context.Categories.FindAsync(request.Id, cancellationToken);
         

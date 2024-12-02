@@ -35,7 +35,7 @@ public class UpdateCostCommandHandler : IRequestHandler<UpdateCostCommand, CostR
         _updateCostCommandValidator = updateCostCommandValidator;
     }
     
-    public async Task<CostResponse> Handle(UpdateCostCommand request, CancellationToken cancellationToken)
+    public async Task<CostResponse> Handle(UpdateCostCommand request, CancellationToken cancellationToken = default)
     {
         await _updateCostCommandValidator.ValidateAndThrowAsync(request, cancellationToken);
         var cost = await _context.Costs.FindAsync(request.Id, cancellationToken);

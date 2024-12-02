@@ -25,7 +25,7 @@ public class AddCategoryCommandHandler : IRequestHandler<AddCategoryCommand, Cat
         _addOrUpdateCategoryRequestValidator = addOrUpdateCategoryRequestValidator;
     }
     
-    public async Task<CategoryResponse> Handle(AddCategoryCommand request, CancellationToken cancellationToken)
+    public async Task<CategoryResponse> Handle(AddCategoryCommand request, CancellationToken cancellationToken = default)
     {
         await _addOrUpdateCategoryRequestValidator.ValidateAndThrowAsync(request, cancellationToken);
         var category = new Category
