@@ -28,12 +28,14 @@ public class CostsController : ControllerBase
     }
     
     [HttpPost]
+    [Consumes("application/json")]
     public async Task<IActionResult> AddCost([FromBody] AddCostCommand request, CancellationToken cancellationToken)
     {
         return Ok(await _mediator.Send(request, cancellationToken));
     }
     
     [HttpPut]
+    [Consumes("application/json")]
     public async Task<IActionResult> UpdateCost([FromBody] UpdateCostCommand request, CancellationToken cancellationToken)
     {
         return Ok(await _mediator.Send(request, cancellationToken));

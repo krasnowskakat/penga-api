@@ -28,7 +28,7 @@ public class DeleteCostCommandHandler : IRequestHandler<DeleteCostCommand>
         
         if (cost == null)
         {
-            throw new ValidationException("Cost not found");
+            throw new KeyNotFoundException($"Cost with ID = {request.Id} not found");
         }
         
         _context.Costs.Remove(cost);

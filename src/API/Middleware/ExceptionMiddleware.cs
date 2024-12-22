@@ -33,6 +33,16 @@ namespace API.Middleware
                 context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 await context.Response.WriteAsync(JsonConvert.SerializeObject(validationException.Errors));
             }
+            else if (ex is KeyNotFoundException)
+            {
+                context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                await context.Response.WriteAsync(JsonConvert.SerializeObject(new { error = ex.Message }));
+            }
+            else if (ex is UnauthorizedAccessException)
+            {
+                context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                await context.Response.WriteAsync(JsonConvert.SerializeObject(new { error = ex.Message }));
+            }
             else
             {
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;

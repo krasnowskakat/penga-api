@@ -29,12 +29,14 @@ public class CategoriesController : ControllerBase
     }
     
     [HttpPost]
+    [Consumes("application/json")]
     public async Task<IActionResult> AddCategory([FromBody] AddCategoryCommand request, CancellationToken cancellationToken)
     {
         return Ok(await _mediator.Send(request, cancellationToken));
     }
     
     [HttpPut]
+    [Consumes("application/json")]
     public async Task<IActionResult> UpdateCategory([FromBody] UpdateCategoryCommand request, CancellationToken cancellationToken)
     {
         return Ok(await _mediator.Send(request, cancellationToken));

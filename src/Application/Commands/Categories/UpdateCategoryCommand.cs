@@ -34,7 +34,7 @@ public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryComman
         
         if (category == null)
         {
-            throw new ValidationException("Category not found");
+            throw new KeyNotFoundException($"Category with ID = {request.Id} not found");
         }
         
         category.Name = request.Name;

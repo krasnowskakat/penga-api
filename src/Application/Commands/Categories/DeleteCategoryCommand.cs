@@ -1,5 +1,4 @@
 using Domain;
-using FluentValidation;
 using MediatR;
 
 namespace Application.Commands.Categories;
@@ -28,7 +27,7 @@ public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryComman
         
         if (category == null)
         {
-            throw new ValidationException("Category not found");
+            throw new KeyNotFoundException($"Category with ID = {request.Id} not found");
         }
         
         _context.Categories.Remove(category);

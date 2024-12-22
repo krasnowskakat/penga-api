@@ -42,7 +42,7 @@ public class UpdateCostCommandHandler : IRequestHandler<UpdateCostCommand, CostR
         
         if (cost == null)
         {
-            throw new ValidationException("Cost not found");
+            throw new KeyNotFoundException($"Cost with ID = {request.Id} not found");
         }
         
         cost.Update(request.Name, request.Description, request.Date, request.Amount, request.CategoryId);
