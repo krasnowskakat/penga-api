@@ -20,17 +20,17 @@ namespace IntegrationTests.Features
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "2.0.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("Add category")]
-    public partial class AddCategoryFeature
+    [NUnit.Framework.DescriptionAttribute("Update category")]
+    public partial class UpdateCategoryFeature
     {
         
         private global::Reqnroll.ITestRunner testRunner;
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "Add category", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "Update category", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
         
-#line 1 "AddCategory.feature"
+#line 1 "UpdateCategory.feature"
 #line hidden
         
         [NUnit.Framework.OneTimeSetUpAttribute()]
@@ -82,12 +82,12 @@ namespace IntegrationTests.Features
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("User adds a valid category")]
-        public async System.Threading.Tasks.Task UserAddsAValidCategory()
+        [NUnit.Framework.DescriptionAttribute("User updates an existing category")]
+        public async System.Threading.Tasks.Task UserUpdatesAnExistingCategory()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("User adds a valid category", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("User updates an existing category", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 3
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -101,18 +101,21 @@ this.ScenarioInitialize(scenarioInfo);
 #line 4
 await testRunner.GivenAsync("the API is running", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-                global::Reqnroll.Table table1 = new global::Reqnroll.Table(new string[] {
-                            "Name"});
-                table1.AddRow(new string[] {
-                            "Shopping"});
 #line 5
-await testRunner.WhenAsync("the user sends a POST request to /api/categories with the following data", ((string)(null)), table1, "When ");
+await testRunner.AndAsync("category with the name Savings exists in the database", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 8
-await testRunner.ThenAsync("the response status code should be 200", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+                global::Reqnroll.Table table2 = new global::Reqnroll.Table(new string[] {
+                            "Name"});
+                table2.AddRow(new string[] {
+                            "Investments"});
+#line 6
+await testRunner.WhenAsync("the user sends a PUT request to /api/categories with the following data", ((string)(null)), table2, "When ");
 #line hidden
 #line 9
-await testRunner.AndAsync("the category is created in database", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+await testRunner.ThenAsync("the response status code should be 200", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+#line 10
+await testRunner.AndAsync("name of the category is updated in database", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

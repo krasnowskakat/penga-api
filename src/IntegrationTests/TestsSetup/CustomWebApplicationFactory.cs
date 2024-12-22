@@ -1,4 +1,5 @@
 using Infrastructure;
+using IntegrationTests.Seeds;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
@@ -10,6 +11,8 @@ namespace IntegrationTests.TestsSetup;
 
 internal class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {
+    public PengaDbContext DbContext { get; private set; }
+    
     private readonly MsSqlContainer _msSqlContainer = new MsSqlBuilder()
         .WithImage("mcr.microsoft.com/mssql/server:2022-latest")
         .Build();
@@ -36,10 +39,11 @@ internal class CustomWebApplicationFactory : WebApplicationFactory<Program>
             });
             
             var serviceProvider = services.BuildServiceProvider();
-            using var scope = serviceProvider.CreateScope();
+            var scope = serviceProvider.CreateScope();
             var scopedServices = scope.ServiceProvider;
-            var db = scopedServices.GetRequiredService<PengaDbContext>();
-            db.Database.Migrate();
+            DbContext = scopedServices.GetRequiredService<PengaDbContext>();
+            DbContext.Database.Migrate();
+            DbSeeder.Seed(DbContext);
         });
     }
     
