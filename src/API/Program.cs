@@ -1,3 +1,4 @@
+using System.Reflection;
 using API.Middleware;
 using Application.Queries.Categories;
 using Application.Validators.Categories;
@@ -11,7 +12,12 @@ var configuration = builder.Configuration;
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    var xmlFileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFileName));
+});
+
 builder.Services.AddControllers();
 builder.Services.AddDb(configuration.GetConnectionString("PengaDb"));
 builder.Services.AddValidatorsFromAssemblyContaining<AddCategoryCommandValidator>();
